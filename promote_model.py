@@ -19,7 +19,7 @@ def load_model_information(file_path):
 
 # get model name
 registered_model_name = 'uber_demand_prediction_model'
-stage = "Staging"
+stage = "Archived"
 
 # get the latest version from staging stage
 client = MlflowClient()
