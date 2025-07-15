@@ -53,7 +53,6 @@ if len(sampled_data) == 30:
     # Shuffle
     plot_data = plot_data.sample(frac=1, random_state=42).reset_index(drop=True)
 
-    # Save to CSV
     plot_data.to_csv('plot_data.csv', index=False)
     print("\n✅ Final plot_data.csv saved.")
     print(f"Final shape: {plot_data.shape}")
