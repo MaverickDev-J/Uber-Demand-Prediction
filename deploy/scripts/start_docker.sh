@@ -2,6 +2,9 @@
 # Log everything to start_docker.log
 exec > /home/ubuntu/start_docker.log 2>&1
 
+# Load environment variables
+source /home/ubuntu/uber-demand-prediction/.env
+
 echo "Logging in to ECR..."
 aws ecr get-login-password --region eu-north-1 | docker login --username AWS --password-stdin 908052928183.dkr.ecr.eu-north-1.amazonaws.com
 
