@@ -28,10 +28,13 @@
 
 
 import json
+import mlflow
 import mlflow.sklearn
 import pytest
 from pathlib import Path
 import dagshub
+import tempfile
+import os
 
 # Initialize Dagshub
 dagshub.init(repo_owner='maverick011', repo_name='Uber-Demand-Prediction', mlflow=True)
@@ -45,12 +48,28 @@ def load_model_information(file_path: str):
 
 @pytest.fixture(scope="module")
 def model():
-    # Load model URI from run_information.json
+    # Load model information from run_information.json
     file_path = Path(__file__).resolve().parents[1] / "run_information.json"
-    model_uri = load_model_information(file_path)["model_uri"]
+    run_info = load_model_information(file_path)
+    run_id = run_info["run_id"]
+    artifact_path = run_info["artifact_path"]
     
-    # Load model using URI
-    return mlflow.sklearn.load_model(model_uri)
+    # Download the model artifact directly
+    client = mlflow.MlflowClient()
+    
+    # Create a temporary directory to download the model
+    with tempfile.TemporaryDirectory() as temp_dir:
+        # Download the model artifact
+        model_path = client.download_artifacts(
+            run_id=run_id,
+            path=artifact_path,
+            dst_path=temp_dir
+        )
+        
+        # Load the model from the downloaded path
+        model = mlflow.sklearn.load_model(model_path)
+        
+        return model
 
 
 def test_load_model_from_run_uri(model):
