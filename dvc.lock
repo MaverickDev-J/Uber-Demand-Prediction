@@ -117,7 +117,7 @@ stages:
     outs:
     - path: ./run_information.json
       hash: md5
-      md5: 7b9a364bb09ce4e3b8b2431949f4b953
+      md5: 4e1cc731ee2c026d1a8a4249b546818c
       size: 171
       isexec: true
   register_model:
@@ -125,7 +125,7 @@ stages:
     deps:
     - path: ./run_information.json
       hash: md5
-      md5: 7b9a364bb09ce4e3b8b2431949f4b953
+      md5: 4e1cc731ee2c026d1a8a4249b546818c
       size: 171
       isexec: true
     - path: ./src/models/register_model.py

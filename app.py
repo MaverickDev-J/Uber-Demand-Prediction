@@ -20,7 +20,7 @@ mlflow.set_tracking_uri("https://dagshub.com/maverick011/Uber-Demand-Prediction.
 
 # get model name
 registered_model_name = 'uber_demand_prediction_model'
-stage = "Staging"
+stage = "Production"
 model_path = f"models:/{registered_model_name}/{stage}"
 
 # load the latest model from model registry
