@@ -29,11 +29,11 @@
 
 import json
 import mlflow
-import mlflow.sklearn
 import pytest
 from pathlib import Path
 import dagshub
 import tempfile
+import joblib
 import os
 
 # Initialize Dagshub
@@ -54,21 +54,25 @@ def model():
     run_id = run_info["run_id"]
     artifact_path = run_info["artifact_path"]
     
-    # Download the model artifact directly
+    # Download the model artifact directly (non-model specific)
     client = mlflow.MlflowClient()
     
     # Create a temporary directory to download the model
     with tempfile.TemporaryDirectory() as temp_dir:
-        # Download the model artifact
-        model_path = client.download_artifacts(
+        # Download all artifacts from the run (avoiding model-specific endpoints)
+        artifacts_path = client.download_artifacts(
             run_id=run_id,
-            path=artifact_path,
+            path="",  # Download all artifacts
             dst_path=temp_dir
         )
         
-        # Load the model from the downloaded path
-        model = mlflow.sklearn.load_model(model_path)
+        # Load the model using joblib directly (since it's a scikit-learn model)
+        model_file = os.path.join(artifacts_path, artifact_path, "model.pkl")
+        if not os.path.exists(model_file):
+            # Try alternative path structure
+            model_file = os.path.join(artifacts_path, artifact_path, "model.joblib")
         
+        model = joblib.load(model_file)
         return model
 
 
