@@ -286,8 +286,7 @@ if __name__ == "__main__":
         logged_model = MockLoggedModel(run_id, artifact_path, model_uri)
         
     logger.info("Mlflow logging complete")
-    
-    # save to json file
+
     json_file_save_path = root_path / "run_information.json"
     save_run_information(run_id=logged_model.run_id,
                          artifact_path=logged_model.artifact_path,
